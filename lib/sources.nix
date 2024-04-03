@@ -25,6 +25,8 @@ let
 
   # Removes entries with `unknown` type, removes object files, removes VCS files,
   # removes editor files, and paths common to Nix flakes.
+  # Nixpkgs `cleanSourceFilter` does not remove Nix files,
+  # other than that, this function and the other ought to be identical.
   defaultSourceFilter = sourceRoot:
     mkSourceFilter sourceRoot [
       unknownSourceFilter
@@ -87,22 +89,37 @@ let
   rustSourceFilter = sourceFilter
     ({ baseName, atRoot, isDir }: !(atRoot && isDir && baseName == "target"));
 
-  # cleanSourceFilter = name: type:
-  #   let baseName = baseNameOf (toString name);
-  #   in !(
-  #     # Filter out version control software files/directories
-  #     (baseName == ".git" || type == "directory"
-  #       && (baseName == ".svn" || baseName == "CVS" || baseName == ".hg")) ||
-  #     # Filter out editor backup / swap files.
-  #     lib.hasSuffix "~" baseName || builtins.match "^\\.sw[a-z]$" baseName
-  #     != null || builtins.match "^\\..*\\.sw[a-z]$" baseName != null ||
-
-  #     # Filter out generates files.
-  #     lib.hasSuffix ".o" baseName || lib.hasSuffix ".so" baseName ||
-  #     # Filter out nix-build result symlinks
-  #     (type == "symlink" && lib.hasPrefix "result" baseName) ||
-  #     # Filter out sockets and other types of files we can't have in the store.
-  #     (type == "unknown"));
+  #  This is the default filter used widely across Nixpkgs.
+  #  <https://github.com/NixOS/nixpkgs/blob/d03a4482228d4d6dbd2d4b425b6dfcd49ebe765f/lib/sources.nix#L26>
+  #  ```nix
+  #  cleanSourceFilter = name: type:
+  #    let baseName = baseNameOf (toString name);
+  #    in !(
+  #      # Filter out version control software files/directories
+  #      (baseName == ".git" || type == "directory"
+  #        && (baseName == ".svn" || baseName == "CVS" || baseName == ".hg")) ||
+  #      # Filter out editor backup / swap files.
+  #      lib.hasSuffix "~" baseName || builtins.match "^\\.sw[a-z]$" baseName
+  #      != null || builtins.match "^\\..*\\.sw[a-z]$" baseName != null ||
+  #
+  #      # Filter out generates files.
+  #      lib.hasSuffix ".o" baseName || lib.hasSuffix ".so" baseName ||
+  #      # Filter out nix-build result symlinks
+  #      (type == "symlink" && lib.hasPrefix "result" baseName) ||
+  #      # Filter out sockets and other types of files we can't have in the store.
+  #      (type == "unknown"));
+  #  ```
+  #
+  #  It is equivalent to
+  #
+  #  ```nix
+  #  mkSourceFilter sourceRoot [
+  #    unknownSourceFilter
+  #    objectSourceFilter
+  #    vcsSourceFilter
+  #    editorSourceFilter
+  #  ];
+  #  ```
 in {
   inherit sourceFilter mkSourceFilter defaultSourceFilter unknownSourceFilter
     objectSourceFilter vcsSourceFilter editorSourceFilter flakeSourceFilter
