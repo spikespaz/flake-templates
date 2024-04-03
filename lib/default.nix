@@ -14,14 +14,17 @@ let
 
   # Creates a new overlay that has applied imports from `dir` and merges
   # them with their respective scopes.
+  stripDotNix = file: builtins.elemAt (builtins.match "(.*).nix" file) 0;
   mergeLib = dir: self: super:
     pipe dir [
       builtins.readDir
       (attrs: removeAttrs attrs [ "default.nix" ])
       (mapAttrs' (file: _: {
-        name = baseNameOf file;
+        name = stripDotNix file;
         value = import "${dir}/${file}";
       }))
+      (x: builtins.trace x x)
       (overlayAttrs self super)
+
     ];
 in mergeLib ./.
