@@ -6,11 +6,11 @@ let
     builtins.listToAttrs
     (map (attr: f attr set.${attr}) (builtins.attrNames set));
 
-  overlayAttrs = self: super:
-    mapAttrs' (name: overlay: rec {
+  overlayAttrs = attrs: self: super:
+    super // (mapAttrs' (name: overlay: rec {
       inherit name;
       value = (super.${name} or { }) // overlay self super;
-    });
+    }) attrs);
 
   # Creates a new overlay that has applied imports from `dir` and merges
   # them with their respective scopes.
@@ -24,7 +24,6 @@ let
         value = import "${dir}/${file}";
       }))
       (x: builtins.trace x x)
-      (overlayAttrs self super)
-
+      (attrs: overlayAttrs attrs self super)
     ];
 in mergeLib ./.
