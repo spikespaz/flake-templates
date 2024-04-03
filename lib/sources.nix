@@ -13,7 +13,7 @@ let
     in if builtins.functionArgs fn == { } then
       fn entry
     else
-      lib.sources.applyAutoArgs fn entry;
+      lib.trivial.applyAutoArgs fn entry;
 
   # Compose multiple filters into one, suitable for `lib.cleanSourceWith`.
   # The first argument is the source root, and the second is a list of filters.
