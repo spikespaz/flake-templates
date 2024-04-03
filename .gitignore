@@ -1,1 +1,5 @@
-/templates/**/flake.lock
+# Flake
+/templates/*/flake.lock
+
+# Rust
+/templates/*/target/
