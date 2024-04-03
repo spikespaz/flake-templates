@@ -9,11 +9,11 @@ let
   # A factory for the function passed to `builtins.filterSource`.
   # This takes a `path` and a `type` for each entry from `builtins.readDir`.
   sourceFilter = fn: sourceRoot: name: type:
-    let entry = lib.mkDirEntry sourceRoot name type;
+    let entry = lib.path.mkDirEntry sourceRoot name type;
     in if builtins.functionArgs fn == { } then
       fn entry
     else
-      lib.applyAutoArgs fn entry;
+      lib.sources.applyAutoArgs fn entry;
 
   # Compose multiple filters into one, suitable for `lib.cleanSourceWith`.
   # The first argument is the source root, and the second is a list of filters.
