@@ -1,11 +1,11 @@
 {
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    rust-overlay.url = "github:oxalica/rust-overlay";
     systems = {
       url = "github:nix-systems/default-linux";
       flake = false;
     };
-    rust-overlay.url = "github:oxalica/rust-overlay";
     templates.url = "github:spikespaz/flake-templates";
   };
 
