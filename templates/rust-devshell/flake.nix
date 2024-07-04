@@ -16,16 +16,14 @@
           localSystem = system;
           overlays = [ rust-overlay.overlays.default ];
         });
-    in
-    {
+    in {
       devShells = eachSystem (system:
         let
           pkgs = pkgsFor.${system};
           rust-stable = pkgs.rust-bin.stable.latest.minimal.override {
             extensions = [ "rust-src" "rust-docs" "clippy" ];
           };
-        in
-        {
+        in {
           default = with pkgs; # remove `with` at your option
             mkShell {
               strictDeps = true;
@@ -34,11 +32,10 @@
                 (lib.hiPrio rust-stable)
 
                 # Use rustfmt, and other tools that require nightly features.
-                (pkgs.rust-bin.selectLatestNightlyWith
-                  (toolchain:
-                    toolchain.minimal.override {
-                      extensions = [ "rustfmt" "rust-analyzer" ];
-                    }))
+                (pkgs.rust-bin.selectLatestNightlyWith (toolchain:
+                  toolchain.minimal.override {
+                    extensions = [ "rustfmt" "rust-analyzer" ];
+                  }))
 
                 # Native transitive dependencies for Cargo
                 pkg-config
