@@ -4,10 +4,9 @@
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     systems.url = "github:nix-systems/default";
-    nixfmt.url = "github:serokell/nixfmt/v0.6.0";
   };
 
-  outputs = { self, nixpkgs, systems, nixfmt }:
+  outputs = { self, nixpkgs, systems }:
     let
       lib = nixpkgs.lib.extend (import ./lib);
       eachSystem = lib.genAttrs (import systems);
@@ -28,6 +27,7 @@
           # welcomeText = "";
         };
       };
-      formatter = eachSystem (system: nixfmt.packages.${system}.nixfmt);
+      formatter =
+        eachSystem (system: nixpkgs.legacyPackages.${system}.nixfmt-classic);
     };
 }
