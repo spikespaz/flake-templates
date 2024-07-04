@@ -7,11 +7,10 @@
     };
     rust-overlay.url = "github:oxalica/rust-overlay";
     templates.url = "github:spikespaz/flake-templates";
-    nixfmt.url = "github:serokell/nixfmt/v0.6.0";
   };
 
   # Replace `slight` everywhere in this file with your package name.
-  outputs = { self, nixpkgs, systems, rust-overlay, templates, nixfmt }:
+  outputs = { self, nixpkgs, systems, rust-overlay, templates }:
     let
       lib = nixpkgs.lib.extend templates.lib.overlay;
       eachSystem = lib.genAttrs (import systems);
@@ -74,6 +73,6 @@
         slight = (self.overlays.default pkgsFor.${system} null).slight;
       });
 
-      formatter = eachSystem (system: nixfmt.packages.${system}.default);
+      formatter = eachSystem (system: pkgsFor.${system}.nixfmt-classic);
     };
 }
