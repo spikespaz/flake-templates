@@ -23,7 +23,6 @@ let
         name = stripDotNix file;
         value = import "${dir}/${file}";
       }))
-      (x: builtins.trace x x)
       (attrs: overlayAttrs attrs self super)
     ];
 in mergeLib ./.
