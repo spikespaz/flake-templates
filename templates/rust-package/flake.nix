@@ -1,7 +1,10 @@
 {
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-    systems.url = "github:nix-systems/default-linux";
+    systems = {
+      url = "github:nix-systems/default-linux";
+      flake = false;
+    };
     rust-overlay.url = "github:oxalica/rust-overlay";
     templates.url = "github:spikespaz/flake-templates";
     nixfmt.url = "github:serokell/nixfmt/v0.6.0";
