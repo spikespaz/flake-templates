@@ -27,26 +27,9 @@
         ${packageName} = pkgs.${packageName};
       }) pkgsFor;
 
-      devShells = lib.mapAttrs (system: pkgs:
-        let
-          rust-stable = pkgs.rust-bin.stable.latest.minimal.override {
-            extensions = [ "rust-src" "rust-docs" "clippy" ];
-          };
-        in {
-          default = pkgs.mkShell {
-            strictDeps = true;
-            packages = with pkgs; [
-              # Derivations in `rust-stable` take precedence over nightly.
-              (lib.hiPrio rust-stable)
-
-              # Use rustfmt, and other tools that require nightly features.
-              (rust-bin.selectLatestNightlyWith (toolchain:
-                toolchain.minimal.override {
-                  extensions = [ "rustfmt" "rust-analyzer" ];
-                }))
-            ];
-          };
-        }) pkgsFor;
+      devShells = lib.mapAttrs (system: pkgs: {
+        default = pkgs.callPackage ./nix/shell.nix { inherit packageName; };
+      }) pkgsFor;
 
       formatter =
         eachSystem (system: nixpkgs.legacyPackages.${system}.nixfmt-classic);
