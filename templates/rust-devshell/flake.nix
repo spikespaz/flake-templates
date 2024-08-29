@@ -17,9 +17,8 @@
           overlays = [ rust-overlay.overlays.default ];
         });
     in {
-      devShells = eachSystem (system:
+      devShells = lib.mapAttrs (system: pkgs:
         let
-          pkgs = pkgsFor.${system};
           rust-stable = pkgs.rust-bin.stable.latest.minimal.override {
             extensions = [ "rust-src" "rust-docs" "clippy" ];
           };
@@ -37,7 +36,7 @@
                 }))
             ];
           };
-        });
+        }) pkgsFor;
 
       formatter = eachSystem (system: pkgsFor.${system}.nixfmt-classic);
     };
