@@ -29,6 +29,30 @@
           path = ./templates/rust-package;
           # welcomeText = "";
         };
+        rust-simple = {
+          description =
+            "A simple flake that provides a shell, package, and overlay using oxalica/rust-overlay";
+          welcomeText = ''
+            Enter the development shell:
+
+              $ nix develop
+
+            Create a new binary crate named after the working directory:
+
+              $ cargo init --bin .
+
+            Build the program to generate `Cargo.lock`:
+
+              $ cargo build
+
+            Ensure that Nix can build the crate:
+
+              $ git add Cargo.lock
+
+              $ nix build
+          '';
+          path = ./templates/rust-simple;
+        };
       };
       formatter =
         eachSystem (system: nixpkgs.legacyPackages.${system}.nixfmt-classic);
