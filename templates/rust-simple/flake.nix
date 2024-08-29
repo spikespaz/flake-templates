@@ -1,4 +1,6 @@
 {
+  description = "Simple Rust Flake Template";
+
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     rust-overlay.url = "github:oxalica/rust-overlay";
