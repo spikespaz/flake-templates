@@ -14,29 +14,13 @@
       pkgsFor = eachSystem (system:
         import nixpkgs {
           localSystem = system;
-          overlays = [ rust-overlay.overlays.default ];
+          overlays = [ self.overlays.default ];
         });
 
       packageName = (lib.importTOML ./Cargo.toml).package.name;
     in {
-      overlays = {
-        default = lib.composeManyExtensions [ self.overlays.${packageName} ];
-
-        ${packageName} = final: _:
-          let
-            rust-bin = rust-overlay.lib.mkRustBin { } final;
-            rust-stable = rust-bin.stable.latest.minimal;
-            rustPlatform = final.makeRustPlatform {
-              cargo = rust-stable;
-              rustc = rust-stable;
-            };
-          in {
-            ${packageName} = final.callPackage ./nix/package.nix {
-              sourceRoot = self;
-              inherit rustPlatform;
-            };
-          };
-      };
+      overlays =
+        import ./nix/overlays { inherit self lib rust-overlay packageName; };
 
       packages = lib.mapAttrs (system: pkgs: {
         default = self.packages.${system}.${packageName};
