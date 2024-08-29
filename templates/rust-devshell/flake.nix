@@ -38,6 +38,7 @@
           };
         }) pkgsFor;
 
-      formatter = eachSystem (system: pkgsFor.${system}.nixfmt-classic);
+      formatter =
+        eachSystem (system: nixpkgs.legacyPackages.${system}.nixfmt-classic);
     };
 }

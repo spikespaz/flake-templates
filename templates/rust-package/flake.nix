@@ -73,6 +73,7 @@
         slight = (self.overlays.default pkgsFor.${system} null).slight;
       });
 
-      formatter = eachSystem (system: pkgsFor.${system}.nixfmt-classic);
+      formatter =
+        eachSystem (system: nixpkgs.legacyPackages.${system}.nixfmt-classic);
     };
 }
