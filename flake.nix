@@ -23,12 +23,6 @@
           path = ./templates/rust-devshell;
           # welcomeText = "";
         };
-        rust-package = {
-          description =
-            "A flake that provides a default Rust package and a development shell.";
-          path = ./templates/rust-package;
-          # welcomeText = "";
-        };
         rust-simple = {
           description =
             "A simple flake that provides a shell, package, and overlay using oxalica/rust-overlay";
