@@ -1,0 +1,6 @@
+# You can delete this file and run `cargo init --lib` or `--bin`,
+# or add to it by referencing:
+# <https://doc.rust-lang.org/cargo/reference/manifest.html>
+
+[package]
+name = "your-crate-name-here"

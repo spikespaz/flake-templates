@@ -5,6 +5,6 @@
 /templates/*/target/
 
 # Template example source
-/templates/rust-simple/Cargo.toml
+# /templates/rust-simple/Cargo.toml
 /templates/rust-simple/Cargo.lock
 /templates/rust-simple/src
