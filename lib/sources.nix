@@ -81,7 +81,8 @@ let
         # And of course, the `flake.lock`.
         || (atRoot && isFile && baseName == "flake.lock")
         # Filter out `nix-build` result symlinks.
-        || (isLink && lib.hasPrefix "result" baseName)));
+        || (isLink && lib.hasPrefix "result" baseName))
+        || (isLink && lib.hasPrefix "result-man" baseName)));
 
   # Removes directories that Cargo generates.
   # This filter is careful and will only remove matching names
