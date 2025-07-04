@@ -29,8 +29,9 @@
           default = pkgs.mkShell {
             strictDeps = true;
             packages = with pkgs; [
-              # Derivations in `rust-stable` take precedence over nightly.
-              (lib.hiPrio rust-stable)
+              # Derivations in `rust-stable` provide the toolchain,
+              # must be listed first to take precedence over nightly.
+              rust-stable
 
               # Use rustfmt, and other tools that require nightly features.
               (rust-bin.selectLatestNightlyWith (toolchain:
