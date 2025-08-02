@@ -1,7 +1,8 @@
 { lib, pkgs, rust-bin, mkShell, packageName }:
 mkShell {
   strictDeps = true;
-  inputsFrom = [ pkgs.${packageName} ];
+  # Un-comment this once you've initialized a Rust crate.
+  # inputsFrom = [ pkgs.${packageName} ];
   packages = [
     # Derivations in `rust-stable` provide the toolchain,
     # must be listed first to take precedence over nightly.
