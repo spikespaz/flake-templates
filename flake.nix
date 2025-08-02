@@ -39,6 +39,10 @@
 
               $ cargo build
 
+            Un-comment `inputsFrom` in `nix/shell.nix`:
+
+              $ sed -i '/Un-comment/d; s/# inputsFrom =/inputsFrom =/' nix/shell.nix
+
             Ensure that Nix can build the crate:
 
               $ git add Cargo.lock
